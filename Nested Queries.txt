@@ -1,0 +1,257 @@
+10 rows in set (0.0156 sec)
+ MySQL  localhost:33060+ ssl  SQL > use company_db;
+Default schema set to `company_db`.
+Fetching global names, object names from `company_db` for auto-completion... Press ^C to stop.
+ MySQL  localhost:33060+ ssl  company_db  SQL > show tables;
++----------------------+
+| Tables_in_company_db |
++----------------------+
+| employee12           |
+| employee_details     |
+| employees            |
++----------------------+
+3 rows in set (0.0046 sec)
+ MySQL  localhost:33060+ ssl  company_db  SQL > select * from employee12;
++--------+----------------+------------+--------------------+----------+-----+--------+------------+--------------------+-----------+
+| emp_id | emp_name       | department | job_title          | salary   | age | gender | hire_date  | email              | city      |
++--------+----------------+------------+--------------------+----------+-----+--------+------------+--------------------+-----------+
+|      1 | Amit Sharma    | IT         | Software Engineer  | 60000.00 |  25 | Male   | 2021-06-15 | amit@company.com   | Delhi     |
+|      2 | Neha Verma     | HR         | HR Executive       | 45000.00 |  28 | Female | 2020-03-10 | neha@company.com   | Mumbai    |
+|      3 | Rahul Singh    | Finance    | Accountant         | 50000.00 |  30 | Male   | 2019-01-20 | rahul@company.com  | Pune      |
+|      4 | Priya Patel    | IT         | Backend Developer  | 70000.00 |  27 | Female | 2022-09-05 | priya@company.com  | Ahmedabad |
+|      5 | Suresh Kumar   | Sales      | Sales Manager      | 65000.00 |  35 | Male   | 2018-11-12 | suresh@company.com | Chennai   |
+|      6 | Anjali Mehta   | Marketing  | Marketing Lead     | 58000.00 |  29 | Female | 2021-07-18 | anjali@company.com | Bangalore |
+|      7 | Vikas Jain     | IT         | Frontend Developer | 55000.00 |  26 | Male   | 2023-02-01 | vikas@company.com  | Jaipur    |
+|      8 | Kavita Rao     | Finance    | Financial Analyst  | 62000.00 |  32 | Female | 2019-08-25 | kavita@company.com | Hyderabad |
+|      9 | Rohit Malhotra | Operations | Operations Manager | 68000.00 |  38 | Male   | 2017-05-30 | rohit@company.com  | Gurgaon   |
+|     10 | Sneha Iyer     | HR         | Recruiter          | 48000.00 |  24 | Female | 2023-01-10 | sneha@company.com  | Kochi     |
++--------+----------------+------------+--------------------+----------+-----+--------+------------+--------------------+-----------+
+10 rows in set (0.0393 sec)
+ MySQL  localhost:33060+ ssl  company_db  SQL > select avg(salary) as average from employee12;
++--------------+
+| average      |
++--------------+
+| 58100.000000 |
++--------------+
+1 row in set (0.0013 sec)
+ MySQL  localhost:33060+ ssl  company_db  SQL > select * from employee12 where salary>(select avg(salary) from employee12);
++--------+----------------+------------+--------------------+----------+-----+--------+------------+--------------------+-----------+
+| emp_id | emp_name       | department | job_title          | salary   | age | gender | hire_date  | email              | city      |
++--------+----------------+------------+--------------------+----------+-----+--------+------------+--------------------+-----------+
+|      1 | Amit Sharma    | IT         | Software Engineer  | 60000.00 |  25 | Male   | 2021-06-15 | amit@company.com   | Delhi     |
+|      4 | Priya Patel    | IT         | Backend Developer  | 70000.00 |  27 | Female | 2022-09-05 | priya@company.com  | Ahmedabad |
+|      5 | Suresh Kumar   | Sales      | Sales Manager      | 65000.00 |  35 | Male   | 2018-11-12 | suresh@company.com | Chennai   |
+|      8 | Kavita Rao     | Finance    | Financial Analyst  | 62000.00 |  32 | Female | 2019-08-25 | kavita@company.com | Hyderabad |
+|      9 | Rohit Malhotra | Operations | Operations Manager | 68000.00 |  38 | Male   | 2017-05-30 | rohit@company.com  | Gurgaon   |
++--------+----------------+------------+--------------------+----------+-----+--------+------------+--------------------+-----------+
+5 rows in set (0.0025 sec)
+ MySQL  localhost:33060+ ssl  company_db  SQL > select max(salary) from employee12 where department=It;
+ERROR: 1054: Unknown column 'It' in 'where clause'
+ MySQL  localhost:33060+ ssl  company_db  SQL > select max(salary) from employee12 where department=IT;
+ERROR: 1054: Unknown column 'IT' in 'where clause'
+ MySQL  localhost:33060+ ssl  company_db  SQL > select max(salary) from employee12 where department='IT';
++-------------+
+| max(salary) |
++-------------+
+|    70000.00 |
++-------------+
+1 row in set (0.0016 sec)
+ MySQL  localhost:33060+ ssl  company_db  SQL > select * from employee12 where department='IT' ans salary=(select max(salary) from employee12 where department='IT');
+ERROR: 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'ans salary=(select max(salary) from employee12 where department='IT')' at line 1
+ MySQL  localhost:33060+ ssl  company_db  SQL > select * from employee12 where department='IT' and salary=(select max(salary) from employee12 where department='IT');
++--------+-------------+------------+-------------------+----------+-----+--------+------------+-------------------+-----------+
+| emp_id | emp_name    | department | job_title         | salary   | age | gender | hire_date  | email             | city      |
++--------+-------------+------------+-------------------+----------+-----+--------+------------+-------------------+-----------+
+|      4 | Priya Patel | IT         | Backend Developer | 70000.00 |  27 | Female | 2022-09-05 | priya@company.com | Ahmedabad |
++--------+-------------+------------+-------------------+----------+-----+--------+------------+-------------------+-----------+
+1 row in set (0.0018 sec)
+ MySQL  localhost:33060+ ssl  company_db  SQL > select * from employee12 where department='IT' and salary=(select max(salary) from employee12);
++--------+-------------+------------+-------------------+----------+-----+--------+------------+-------------------+-----------+
+| emp_id | emp_name    | department | job_title         | salary   | age | gender | hire_date  | email             | city      |
++--------+-------------+------------+-------------------+----------+-----+--------+------------+-------------------+-----------+
+|      4 | Priya Patel | IT         | Backend Developer | 70000.00 |  27 | Female | 2022-09-05 | priya@company.com | Ahmedabad |
++--------+-------------+------------+-------------------+----------+-----+--------+------------+-------------------+-----------+
+1 row in set (0.0022 sec)
+ MySQL  localhost:33060+ ssl  company_db  SQL > select max(salary) from employee12 where salary<(select max(salary) from employee12);
++-------------+
+| max(salary) |
++-------------+
+|    68000.00 |
++-------------+
+1 row in set (0.0018 sec)
+ MySQL  localhost:33060+ ssl  company_db  SQL > select max(salary) from employee12 where salary<(select * from employee12 where salary<max);
+ERROR: 1054: Unknown column 'max' in 'where clause'
+ MySQL  localhost:33060+ ssl  company_db  SQL > select * from employee12 where salary<(select max(salary) from employee12);
++--------+----------------+------------+--------------------+----------+-----+--------+------------+--------------------+-----------+
+| emp_id | emp_name       | department | job_title          | salary   | age | gender | hire_date  | email              | city      |
++--------+----------------+------------+--------------------+----------+-----+--------+------------+--------------------+-----------+
+|      1 | Amit Sharma    | IT         | Software Engineer  | 60000.00 |  25 | Male   | 2021-06-15 | amit@company.com   | Delhi     |
+|      2 | Neha Verma     | HR         | HR Executive       | 45000.00 |  28 | Female | 2020-03-10 | neha@company.com   | Mumbai    |
+|      3 | Rahul Singh    | Finance    | Accountant         | 50000.00 |  30 | Male   | 2019-01-20 | rahul@company.com  | Pune      |
+|      5 | Suresh Kumar   | Sales      | Sales Manager      | 65000.00 |  35 | Male   | 2018-11-12 | suresh@company.com | Chennai   |
+|      6 | Anjali Mehta   | Marketing  | Marketing Lead     | 58000.00 |  29 | Female | 2021-07-18 | anjali@company.com | Bangalore |
+|      7 | Vikas Jain     | IT         | Frontend Developer | 55000.00 |  26 | Male   | 2023-02-01 | vikas@company.com  | Jaipur    |
+|      8 | Kavita Rao     | Finance    | Financial Analyst  | 62000.00 |  32 | Female | 2019-08-25 | kavita@company.com | Hyderabad |
+|      9 | Rohit Malhotra | Operations | Operations Manager | 68000.00 |  38 | Male   | 2017-05-30 | rohit@company.com  | Gurgaon   |
+|     10 | Sneha Iyer     | HR         | Recruiter          | 48000.00 |  24 | Female | 2023-01-10 | sneha@company.com  | Kochi     |
++--------+----------------+------------+--------------------+----------+-----+--------+------------+--------------------+-----------+
+9 rows in set (0.0018 sec)
+ MySQL  localhost:33060+ ssl  company_db  SQL > select * from employee12 where salary>(select max(salary) from employee12);
+Empty set (0.0016 sec)
+ MySQL  localhost:33060+ ssl  company_db  SQL > select * from employee12 where max(salary) limit(5) offset(1);
+ERROR: 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(5) offset(1)' at line 1
+ MySQL  localhost:33060+ ssl  company_db  SQL > select * from employee12 order by salary desc limit(5) offset(1);
+ERROR: 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(5) offset(1)' at line 1
+ MySQL  localhost:33060+ ssl  company_db  SQL > select * from employee12 order by salary desc limit 5 offset 1;
++--------+----------------+------------+--------------------+----------+-----+--------+------------+--------------------+-----------+
+| emp_id | emp_name       | department | job_title          | salary   | age | gender | hire_date  | email              | city      |
++--------+----------------+------------+--------------------+----------+-----+--------+------------+--------------------+-----------+
+|      9 | Rohit Malhotra | Operations | Operations Manager | 68000.00 |  38 | Male   | 2017-05-30 | rohit@company.com  | Gurgaon   |
+|      5 | Suresh Kumar   | Sales      | Sales Manager      | 65000.00 |  35 | Male   | 2018-11-12 | suresh@company.com | Chennai   |
+|      8 | Kavita Rao     | Finance    | Financial Analyst  | 62000.00 |  32 | Female | 2019-08-25 | kavita@company.com | Hyderabad |
+|      1 | Amit Sharma    | IT         | Software Engineer  | 60000.00 |  25 | Male   | 2021-06-15 | amit@company.com   | Delhi     |
+|      6 | Anjali Mehta   | Marketing  | Marketing Lead     | 58000.00 |  29 | Female | 2021-07-18 | anjali@company.com | Bangalore |
++--------+----------------+------------+--------------------+----------+-----+--------+------------+--------------------+-----------+
+5 rows in set (0.0019 sec)
+ MySQL  localhost:33060+ ssl  company_db  SQL > select city from employee12 where department='IT';
++-----------+
+| city      |
++-----------+
+| Delhi     |
+| Ahmedabad |
+| Jaipur    |
++-----------+
+3 rows in set (0.0017 sec)
+ MySQL  localhost:33060+ ssl  company_db  SQL > select * from employee12 where city=(select city from employee12 where department='IT');
+ERROR: 1242: Subquery returns more than 1 row
+ MySQL  localhost:33060+ ssl  company_db  SQL > select * from employee12 where city=(select * from employee12 where department='IT');
+ERROR: 1241: Operand should contain 1 column(s)
+ MySQL  localhost:33060+ ssl  company_db  SQL > select * from employee12 where city in (select city from employee12 where department='IT');
++--------+-------------+------------+--------------------+----------+-----+--------+------------+-------------------+-----------+
+| emp_id | emp_name    | department | job_title          | salary   | age | gender | hire_date  | email             | city      |
++--------+-------------+------------+--------------------+----------+-----+--------+------------+-------------------+-----------+
+|      1 | Amit Sharma | IT         | Software Engineer  | 60000.00 |  25 | Male   | 2021-06-15 | amit@company.com  | Delhi     |
+|      4 | Priya Patel | IT         | Backend Developer  | 70000.00 |  27 | Female | 2022-09-05 | priya@company.com | Ahmedabad |
+|      7 | Vikas Jain  | IT         | Frontend Developer | 55000.00 |  26 | Male   | 2023-02-01 | vikas@company.com | Jaipur    |
++--------+-------------+------------+--------------------+----------+-----+--------+------------+-------------------+-----------+
+3 rows in set (0.0153 sec)
+ MySQL  localhost:33060+ ssl  company_db  SQL > select * from employee12 where city in (select city from employee12 where department='IT','HR');
+ERROR: 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ','HR')' at line 1
+ MySQL  localhost:33060+ ssl  company_db  SQL > select * from employee12 where city in (select city from employee12 where department in ('IT','HR'));
++--------+-------------+------------+--------------------+----------+-----+--------+------------+-------------------+-----------+
+| emp_id | emp_name    | department | job_title          | salary   | age | gender | hire_date  | email             | city      |
++--------+-------------+------------+--------------------+----------+-----+--------+------------+-------------------+-----------+
+|      1 | Amit Sharma | IT         | Software Engineer  | 60000.00 |  25 | Male   | 2021-06-15 | amit@company.com  | Delhi     |
+|      2 | Neha Verma  | HR         | HR Executive       | 45000.00 |  28 | Female | 2020-03-10 | neha@company.com  | Mumbai    |
+|      4 | Priya Patel | IT         | Backend Developer  | 70000.00 |  27 | Female | 2022-09-05 | priya@company.com | Ahmedabad |
+|      7 | Vikas Jain  | IT         | Frontend Developer | 55000.00 |  26 | Male   | 2023-02-01 | vikas@company.com | Jaipur    |
+|     10 | Sneha Iyer  | HR         | Recruiter          | 48000.00 |  24 | Female | 2023-01-10 | sneha@company.com | Kochi     |
++--------+-------------+------------+--------------------+----------+-----+--------+------------+-------------------+-----------+
+5 rows in set (0.0020 sec)
+ MySQL  localhost:33060+ ssl  company_db  SQL > select department,city from employee12;
++------------+-----------+
+| department | city      |
++------------+-----------+
+| IT         | Delhi     |
+| HR         | Mumbai    |
+| Finance    | Pune      |
+| IT         | Ahmedabad |
+| Sales      | Chennai   |
+| Marketing  | Bangalore |
+| IT         | Jaipur    |
+| Finance    | Hyderabad |
+| Operations | Gurgaon   |
+| HR         | Kochi     |
++------------+-----------+
+10 rows in set (0.0024 sec)
+ MySQL  localhost:33060+ ssl  company_db  SQL > select department,city from employee12 where department='HR';
++------------+--------+
+| department | city   |
++------------+--------+
+| HR         | Mumbai |
+| HR         | Kochi  |
++------------+--------+
+2 rows in set (0.0014 sec)
+ MySQL  localhost:33060+ ssl  company_db  SQL > select * from employee12 where (department,city) in (select department,city from where department='HR');
+ERROR: 1064: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where department='HR')' at line 1
+ MySQL  localhost:33060+ ssl  company_db  SQL > select * from employee12 where (department,city) in (select department,city from employee12 where department='HR');
++--------+------------+------------+--------------+----------+-----+--------+------------+-------------------+--------+
+| emp_id | emp_name   | department | job_title    | salary   | age | gender | hire_date  | email             | city   |
++--------+------------+------------+--------------+----------+-----+--------+------------+-------------------+--------+
+|      2 | Neha Verma | HR         | HR Executive | 45000.00 |  28 | Female | 2020-03-10 | neha@company.com  | Mumbai |
+|     10 | Sneha Iyer | HR         | Recruiter    | 48000.00 |  24 | Female | 2023-01-10 | sneha@company.com | Kochi  |
++--------+------------+------------+--------------+----------+-----+--------+------------+-------------------+--------+
+2 rows in set (0.0175 sec)
+ MySQL  localhost:33060+ ssl  company_db  SQL > select department,city from employee12 where department='HR' or 'IT';
++------------+--------+
+| department | city   |
++------------+--------+
+| HR         | Mumbai |
+| HR         | Kochi  |
++------------+--------+
+2 rows in set, 1 warning (0.0019 sec)
+Warning (code 1292): Truncated incorrect DOUBLE value: 'IT'
+ MySQL  localhost:33060+ ssl  company_db  SQL > select department,city from employee12 where department='HR' and 'IT';
+Empty set, 1 warning (0.0017 sec)
+Warning (code 1292): Truncated incorrect DOUBLE value: 'IT'
+ MySQL  localhost:33060+ ssl  company_db  SQL > select department,city from employee12 where department='HR' and department='IT';
+Empty set (0.0014 sec)
+ MySQL  localhost:33060+ ssl  company_db  SQL > select department,city from employee12 where department='HR' or department='IT';
++------------+-----------+
+| department | city      |
++------------+-----------+
+| IT         | Delhi     |
+| HR         | Mumbai    |
+| IT         | Ahmedabad |
+| IT         | Jaipur    |
+| HR         | Kochi     |
++------------+-----------+
+5 rows in set (0.0017 sec)
+ MySQL  localhost:33060+ ssl  company_db  SQL > select department,city from employee12 where department='HR' and department='IT';
+Empty set (0.0011 sec)
+ MySQL  localhost:33060+ ssl  company_db  SQL > select department,city from employee12 where department='HR' and city='Delhi';
+Empty set (0.0017 sec)
+ MySQL  localhost:33060+ ssl  company_db  SQL > select department,city from employee12 where department='HR' and city='Mumbai';
++------------+--------+
+| department | city   |
++------------+--------+
+| HR         | Mumbai |
++------------+--------+
+1 row in set (0.0018 sec)
+ MySQL  localhost:33060+ ssl  company_db  SQL > select department,city from employee12 where department='HR' or city='Mumbai';
++------------+--------+
+| department | city   |
++------------+--------+
+| HR         | Mumbai |
+| HR         | Kochi  |
++------------+--------+
+2 rows in set (0.0014 sec)
+ MySQL  localhost:33060+ ssl  company_db  SQL > select * from employee12 where(department,city) in (select department,city from employee12 where department='hr' or city='Mumbai');
++--------+------------+------------+--------------+----------+-----+--------+------------+-------------------+--------+
+| emp_id | emp_name   | department | job_title    | salary   | age | gender | hire_date  | email             | city   |
++--------+------------+------------+--------------+----------+-----+--------+------------+-------------------+--------+
+|      2 | Neha Verma | HR         | HR Executive | 45000.00 |  28 | Female | 2020-03-10 | neha@company.com  | Mumbai |
+|     10 | Sneha Iyer | HR         | Recruiter    | 48000.00 |  24 | Female | 2023-01-10 | sneha@company.com | Kochi  |
++--------+------------+------------+--------------+----------+-----+--------+------------+-------------------+--------+
+2 rows in set (0.0026 sec)
+ MySQL  localhost:33060+ ssl  company_db  SQL > select * from employee12 where(department,city) in (select department,city from employee12 where departmen in('IT','HR') or city='Mumbai');
+ERROR: 1054: Unknown column 'departmen' in 'where clause'
+ MySQL  localhost:33060+ ssl  company_db  SQL > select * from employee12 where(department,city) in (select department,city from employee12 where department in('IT','HR') or city='Mumbai');
++--------+-------------+------------+--------------------+----------+-----+--------+------------+-------------------+-----------+
+| emp_id | emp_name    | department | job_title          | salary   | age | gender | hire_date  | email             | city      |
++--------+-------------+------------+--------------------+----------+-----+--------+------------+-------------------+-----------+
+|      1 | Amit Sharma | IT         | Software Engineer  | 60000.00 |  25 | Male   | 2021-06-15 | amit@company.com  | Delhi     |
+|      2 | Neha Verma  | HR         | HR Executive       | 45000.00 |  28 | Female | 2020-03-10 | neha@company.com  | Mumbai    |
+|      4 | Priya Patel | IT         | Backend Developer  | 70000.00 |  27 | Female | 2022-09-05 | priya@company.com | Ahmedabad |
+|      7 | Vikas Jain  | IT         | Frontend Developer | 55000.00 |  26 | Male   | 2023-02-01 | vikas@company.com | Jaipur    |
+|     10 | Sneha Iyer  | HR         | Recruiter          | 48000.00 |  24 | Female | 2023-01-10 | sneha@company.com | Kochi     |
++--------+-------------+------------+--------------------+----------+-----+--------+------------+-------------------+-----------+
+5 rows in set (0.0022 sec)
+ MySQL  localhost:33060+ ssl  company_db  SQL > select * from employee12 where(department,city) in (select department,city from employee12 where department='HR' and city='Mumbai');
++--------+------------+------------+--------------+----------+-----+--------+------------+------------------+--------+
+| emp_id | emp_name   | department | job_title    | salary   | age | gender | hire_date  | email            | city   |
++--------+------------+------------+--------------+----------+-----+--------+------------+------------------+--------+
+|      2 | Neha Verma | HR         | HR Executive | 45000.00 |  28 | Female | 2020-03-10 | neha@company.com | Mumbai |
++--------+------------+------------+--------------+----------+-----+--------+------------+------------------+--------+
+1 row in set (0.0020 sec)
+ MySQL  localhost:33060+ ssl  company_db  SQL >
